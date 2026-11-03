@@ -1,23 +1,28 @@
 public class MemoryAllocation
 {
+	//theoretically, its a weird node
     //package access-reachable by memory manager
     //but not those that would use this module
     String owner;  //which process owns this memory
     long pos;      //where does it start
     long len;      //how long is the memory
-
+    MemoryAllocation next;
+    MemoryAllocation prev;
 
 
     //You might want to add additional data/methods here
-
+    //ADD NEXT PLEAK
 
     //feel free to alter the constructor if you need/want to
-    public MemoryAllocation(String owner, long pos, long len)
+    public MemoryAllocation(String owner, long len, long pos, MemoryAllocation prev, MemoryAllocation next)
 
     {
 	this.owner = owner;
 	this.pos = pos;
 	this.len=len;
+	
+	next = null;
+	prev = null; 
     }
 
 

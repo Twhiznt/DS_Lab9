@@ -1,3 +1,5 @@
+
+
 public class MemoryManager
 {
    protected MemoryAllocation head;
@@ -9,8 +11,16 @@ public class MemoryManager
      *  Memory starts at 0
      *
      */
+   protected MemoryAllocation back; 
+   protected long space;
+   protected long availSpace; 
+   
    public MemoryManager(long size)
    {
+		   head = null; 
+		   back  = null;
+		   space = size; 
+		   availSpace = size;
    
    }
 
@@ -24,7 +34,22 @@ public class MemoryManager
     
    public MemoryAllocation requestMemory(long size,String requester)
    {
-      return null;
+	MemoryAllocation newMem = null;
+	if ((availSpace>=size))
+	{
+	      //iterate through linked list here to find pos
+		
+	}
+	if (availSpace == space)
+	{
+		newMem = new MemoryAllocation(requester, size, 0, null, null);
+		availSpace = availSpace - size;
+	}
+	//loop through list or something to find first Free
+	//go make mem allocation a d linked list
+	return newMem;
+		   
+   
    }
 
 
