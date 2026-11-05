@@ -8,6 +8,7 @@ public class MemoryAllocation
     long len;      //how long is the memory
     MemoryAllocation next;
     MemoryAllocation prev;
+    
 
 
     //You might want to add additional data/methods here
@@ -20,9 +21,8 @@ public class MemoryAllocation
 	this.owner = owner;
 	this.pos = pos;
 	this.len=len;
-	
-	next = null;
-	prev = null; 
+	this.next = next;
+	this.prev = prev; 
     }
 
 
@@ -41,6 +41,15 @@ public class MemoryAllocation
 	return len;
     }
     
+    public MemoryAllocation getNext()
+    {
+	return next;
+    }
+    
+    public MemoryAllocation getPrev()
+    {
+	return prev;
+    }
 
 
     public String toString()
