@@ -5,6 +5,7 @@ public class MemoryManager
  
     
    protected final String Free = "Free";
+   protected final String Stop = "Stop";
 
 
     /* size- how big is the memory space.  
@@ -14,13 +15,17 @@ public class MemoryManager
    protected MemoryAllocation back; 
    protected MemoryAllocation head;
    protected MemoryAllocation MemSpace;
-   
+   protected MemoryAllocation MemSentinel;
+   protected MemoryAllocation MemSentinelBack;
 
    protected long availSpace; 
    
    public MemoryManager(long size)
    {
-		   MemSpace = new MemoryAllocation(Free, size, 0, null, null);
+		   
+		   MemSentinel = new MemoryAllocation(Stop, size, -1, MemSentinelBack, MemSpace);
+		   MemSentinelBack = new MemoryAllocation(Stop, size, -2, MemSpace, MemSentinel);
+		   MemSpace = new MemoryAllocation(Free, size, 0, MemSentinel, MemSentinelBack);
 		   head = MemSpace; 
 		   back  = MemSpace;
 		   //space = size; 
@@ -49,11 +54,14 @@ public class MemoryManager
 	///THE ISSUE THAT IS HAPPENING IS A FIRST CASE BC THE BIG SLOT IS ONE BIG NODE
 	MemoryAllocation newMem = new MemoryAllocation(requester, size, clearSpot.pos, clearSpot.prev, clearSpot);
 	
-	newMem.next.prev = newMem; 
 	newMem.prev.next = newMem;
+	newMem.next.prev = newMem; 
+
 	
 	clearSpot.len = clearSpot.len - size; 
 	clearSpot.pos = clearSpot.pos + size;
+	
+	if(newMem.pos == 0){head=newMem;}
 	
 	return newMem;
 	/*
@@ -117,13 +125,25 @@ public class MemoryManager
    public MemoryAllocation findMemorySlot(long size)
    {
 		   //MemoryAllocation memSlot = new MemoryAllocation(Free, 0, 0, null, null);
+		   /*
+		   MemoryAllocation slot = null;
 		   MemoryAllocation current = head; 
-		   while(current!=null && size>current.len)
+		   while(current!=null && size>current.len && current.owner != Free && current.owner!= Stop)
 		   {
 			   current = current.next;
+			   
 		   }
 		   
-		   
+		   */
+		   MemoryAllocation current = head;
+		   while(current.owner != Free || current.len < size)
+		   {
+			   
+			   current=current.next;
+			   if(current.owner==Stop) {return null;}
+			   
+		   }
+
 		   return current;
    }
 
